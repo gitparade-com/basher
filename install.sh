@@ -32,7 +32,7 @@ basher_keyword="basher5ea843"
 ## now add the basher initialisation lines to the user's startup script
 if [[ "$startup_type" == "simple" ]]; then
   (
-    echo "export PATH=\"$HOME/.basher/bin:$PATH\"   ##$basher_keyword"
+    echo "export PATH=\"\$HOME/.basher/bin:\$PATH\"   ##$basher_keyword"
     # shellcheck disable=SC2086
     echo "eval \"$(basher init - $shell_type)\"             ##$basher_keyword"
   ) >>"$startup_script"
@@ -42,7 +42,7 @@ elif [[ "$startup_type" == "fish" ]]; then
     echo "  set basher ~/.basher/bin    ##$basher_keyword"
     echo "end                           ##$basher_keyword"
     # shellcheck disable=SC2154
-    echo "set -gx PATH $basher $PATH    ##$basher_keyword"
+    echo "set -gx PATH \$basher \$PATH    ##$basher_keyword"
     echo "status --is-interactive; and . (basher init - $shell_type | psub)    ##$basher_keyword"
   ) >>"$startup_script"
 else
