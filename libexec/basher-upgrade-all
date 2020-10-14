@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Summary: Upgrades a package
+# Usage: basher upgrade <package>
+
+set -e
+
+if [ "$#" -ne 0 ]; then
+  basher-help upgrade-all
+  exit 1
+fi
+
+  find "$BASHER_PACKAGES_PATH" -mindepth 2 -maxdepth 2 -type d \
+| while read -r package_path ; do
+    package=$(basename "$package_path")
+    user_folder=$(dirname "$package_path")
+    username=$(basename "$user_folder")
+    printf "%-25s : " "$username/$package"
+    cd "$package_path"
+    git pull > /dev/null && echo "-" || echo "Updated!"
+  done
