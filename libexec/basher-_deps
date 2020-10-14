@@ -16,17 +16,21 @@ if [ "$#" -ne 1 ]; then
 fi
 
 package="$1"
+shopt -s nullglob
 
-if [ ! -e "$BASHER_PACKAGES_PATH/$package/package.sh" ]; then
+package_file="$BASHER_PACKAGES_PATH/$package/package.sh"
+if [ -e "$package_file" ]; then
+  # shellcheck disable=SC1090
+  source "$package_file"
+  # shellcheck disable=SC2153
+  IFS=: read -r -a deps <<< "$DEPS"
+
+  for dep in "${deps[@]}"
+  do
+    basher-install "$dep"
+  done
+else
   exit
 fi
 
-shopt -s nullglob
 
-source "$BASHER_PACKAGES_PATH/$package/package.sh"
-IFS=: read -a deps <<< "$DEPS"
-
-for dep in "${deps[@]}"
-do
-  basher-install "$dep"
-done

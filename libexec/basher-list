@@ -12,10 +12,10 @@ fi
 
 shopt -s nullglob
 
-for package_path in ${BASHER_PACKAGES_PATH}/*/*
-do
-  username="$(dirname "$package_path")"
-  username="${username##*/}"
-  package="${package_path##*/}"
-  echo "$username/$package"
-done
+  find "$BASHER_PACKAGES_PATH" -mindepth 2 -maxdepth 2 -type d \
+| while read -r package_path ; do
+    package=$(basename "$package_path")
+    user_folder=$(dirname "$package_path")
+    username=$(basename "$user_folder")
+    echo "$username/$package"
+  done

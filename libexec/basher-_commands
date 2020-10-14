@@ -15,6 +15,7 @@ fi
 
 package="$1"
 
+# shellcheck disable=SC2206
 IFS=: paths=($PATH)
 
 shopt -s nullglob
@@ -23,7 +24,7 @@ shopt -s nullglob
     for command in "${path}/$package-"*; do
       command="${command##*$package-}"
       if [[ ! "$command" == _* ]]; then
-        echo ${command}
+        echo "${command}"
       fi
     done
   done

@@ -9,16 +9,19 @@ resolve_link() {
 }
 
 abs_dirname() {
-  local cwd="$(pwd)"
+  local cwd
+  cwd="$(pwd)"
   local path="$1"
 
   while [ -n "$path" ]; do
+    # shellcheck disable=SC2164
     cd "${path%/*}"
     local name="${path##*/}"
     path="$(resolve_link "$name" || true)"
   done
 
   pwd
+  # shellcheck disable=SC2164
   cd "$cwd"
 }
 

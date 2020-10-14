@@ -7,18 +7,16 @@ set -e
 
 shopt -s nullglob
 
-IFS=$'\r\n' packages=($(basher list))
-
-for package in "${packages[@]}"
-do
-  package_path="$BASHER_PACKAGES_PATH/$package"
-  if [ ! -L "$package_path" ]; then
-    cd $package_path
-    git remote update > /dev/null 2>&1
-    if git symbolic-ref --short -q HEAD > /dev/null; then
-        if [ "$(git rev-list --count HEAD...HEAD@{upstream})" -gt 0 ]; then
-          echo "$package"
-        fi
+  find "$BASHER_PACKAGES_PATH" -mindepth 2 -maxdepth 2 -type d \
+| while read -r package_path ; do
+    package=$(basename "$package_path")
+    user_folder=$(dirname "$package_path")
+    username=$(basename "$user_folder")
+    if [ ! -L "$package_path" ]; then
+      cd "$package_path"
+      git remote update  >/dev/null 2>&1
+      if git symbolic-ref --short -q HEAD > /dev/null; then
+          [[ "$(git rev-list --count HEAD...HEAD@\{upstream\})" -gt 0 ]] && echo "$username/$package"
+      fi
     fi
-  fi
-done
+  done

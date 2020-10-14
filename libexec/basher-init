@@ -21,7 +21,9 @@ print_fish_commands() {
   echo "set -gx BASHER_PREFIX $BASHER_PREFIX"
   echo "set -gx BASHER_PACKAGES_PATH $BASHER_PACKAGES_PATH"
 
+  # shellcheck disable=SC2016
   echo 'if not contains $BASHER_ROOT/cellar/bin $PATH'
+  # shellcheck disable=SC2016
   echo 'set -gx PATH $BASHER_ROOT/cellar/bin $PATH'
   echo 'end'
 }
@@ -32,15 +34,19 @@ print_sh_commands(){
   echo "export BASHER_PREFIX=$BASHER_PREFIX"
   echo "export BASHER_PACKAGES_PATH=$BASHER_PACKAGES_PATH"
 
+  # shellcheck disable=SC2016
   echo 'export PATH="$BASHER_ROOT/cellar/bin:$PATH"'
 }
 
 load_bash_package_completions() {
+  # shellcheck disable=SC2016
   echo 'for f in $(command ls "$BASHER_ROOT/cellar/completions/bash"); do source "$BASHER_ROOT/cellar/completions/bash/$f"; done'
 }
 
 load_zsh_package_completions() {
+  # shellcheck disable=SC2016
   echo 'fpath=("$BASHER_ROOT/cellar/completions/zsh/compsys" $fpath)'
+  # shellcheck disable=SC2016
   echo 'for f in $(command ls "$BASHER_ROOT/cellar/completions/zsh/compctl"); do source "$BASHER_ROOT/cellar/completions/zsh/compctl/$f"; done'
 }
 
